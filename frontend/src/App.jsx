@@ -1,10 +1,15 @@
 import React from 'react'
-import { Button } from './components/ui/button'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Layout from './layout/Layout'
 
 const App = () => {
   return (
-    <div>
-      <Button>App</Button>
+    <div className='bg-violet-100'>
+      <BrowserRouter>
+        <Routes>
+          <Route path='' element={<Layout/>}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
