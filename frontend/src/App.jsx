@@ -6,7 +6,7 @@ import Index from './pages/Index'
 
 const App = () => {
   return (
-    <div className='bg-violet-100'>
+    <div className='bg-slate-100'>
       <BrowserRouter>
         <Routes>
           <Route path={RouteIndex} element={<Layout/>}>
