@@ -17,6 +17,7 @@ export class UsersService {
         name: string;
         email: string;
         password: string;
+        avatar?: string;
     }): Promise<UserDocument> {
         const user = new this.userModel(data);
         return user.save();
