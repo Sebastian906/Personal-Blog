@@ -5,16 +5,23 @@ import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import z from 'zod'
 import { Card } from '@/components/ui/card'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RouteSignIn } from '@/helpers/RouteName'
+import { getEnv } from '@/helpers/getEnv'
+import { showToast } from '@/helpers/showToast'
 
 const SignUp = () => {
+
+    const navigate = useNavigate()
 
     const formSchema = z.object({
         name: z.string().min(3, 'El nombre debe ser de al menos 3 caracteres.'),
         email: z.string().email(),
         password: z.string().min(8, 'La contraseña debe ser de al menos 8 caracteres.'),
-        confirmPassword: z.string().refine(data => data.password === data.confirmPassword, 'Las contraseñas no coinciden.')
+        confirmPassword: z.string().min(8, 'La confirmación debe tener al menos 8 caracteres.')
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: 'Las contraseñas no coinciden.',
+        path: ['confirmPassword'],
     })
 
     const form = useForm({
@@ -27,8 +34,23 @@ const SignUp = () => {
         }
     })
 
-    function onSubmit(values) {
-        console.log(values)
+    async function onSubmit(values) {
+        try {
+            const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/auth/register`, {
+                method: 'post',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(values)
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                showToast('error', data.message)
+                return
+            }
+            showToast('success', data.message)
+            navigate(RouteSignIn)
+        } catch (error) {
+            showToast('error', error.message)
+        }
     }
 
     return (
