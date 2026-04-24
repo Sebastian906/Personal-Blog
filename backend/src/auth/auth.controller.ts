@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import express from 'express';
+import { GoogleLoginDto } from './dto/google-login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -18,5 +19,11 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     login(@Body() body: LoginDto, @Res({ passthrough: true }) res: express.Response) {
         return this.authService.login(body.email, body.password, res);
+    }
+
+    @Post('google-login')
+    @HttpCode(HttpStatus.OK)
+    googleLogin(@Body() body: GoogleLoginDto, @Res({ passthrough: true }) res: express.Response) {
+        return this.authService.googleLogin(body.name, body.email, body.avatar ?? '', res);
     }
 }

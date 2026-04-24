@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { RouteSignIn } from '@/helpers/RouteName'
 import { getEnv } from '@/helpers/getEnv'
 import { showToast } from '@/helpers/showToast'
+import GoogleLogin from '@/components/GoogleLogin'
 
 const SignUp = () => {
 
@@ -43,8 +44,7 @@ const SignUp = () => {
             })
             const data = await response.json()
             if (!response.ok) {
-                showToast('error', data.message)
-                return
+                return showToast('error', data.message)
             }
             showToast('success', data.message)
             navigate(RouteSignIn)
@@ -57,6 +57,12 @@ const SignUp = () => {
         <div className='flex justify-center items-center h-screen w-screen'>
             <Card className='w-100 p-4'>
                 <h1 className='text-2xl font-bold text-center mb-5'>Crear Cuenta</h1>
+                <div>
+                    <GoogleLogin />
+                    <div className='border my-5 flex justify-center items-center'>
+                        <span className='absolute bg-white'>O</span>
+                    </div>
+                </div>
                 <FormProvider {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-sm space-y-4">
                         <div className='flex flex-col gap-2'>
