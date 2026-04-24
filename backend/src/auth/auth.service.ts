@@ -6,8 +6,12 @@ import * as bcryptjs from 'bcryptjs';
 export class AuthService {
     constructor(private readonly usersService: UsersService) { }
     
-    async register(name: string, email: string, password: string) {
+    async register(name: string, email: string, password: string, confirmPassword: string) {
         try {
+            if (password !== confirmPassword) {
+                throw new ConflictException('Las contraseñas no coinciden.');
+            }
+
             const existingUser = await this.usersService.findByEmail(email);
             if (existingUser) {
                 throw new ConflictException('El usuario ya está registrado.');  // 409

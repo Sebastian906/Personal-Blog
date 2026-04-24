@@ -15,14 +15,14 @@ export class User {
         required: true,
         trim: true,
     })
-    role!: string;
+    role: string;
 
     @Prop({
         type: String,
         required: true,
         trim: true,
     })
-    name!: string;
+    name: string;
 
     @Prop({
         type: String,
@@ -30,24 +30,23 @@ export class User {
         unique: true,
         trim: true,
     })
-    email!: string;
+    email: string;
 
     @Prop({
         type: String,
         trim: true,
     })
-    bio!: string;
+    bio?: string;
 
     @Prop({
         type: String,
         trim: true,
     })
-    avatar!: string;
+    avatar?: string;
 
     @Prop({
         type: String,
         trim: true,
-        // select: false, // Útil si quieres que el password no se incluya en las consultas por defecto
     })
     password!: string;
 }
