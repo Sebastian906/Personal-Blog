@@ -10,48 +10,45 @@ import { RouteSignIn } from '@/helpers/RouteName'
 import { getEnv } from '@/helpers/getEnv'
 import { showToast } from '@/helpers/showToast'
 import GoogleLogin from '@/components/GoogleLogin'
+import { useMutation } from '@tanstack/react-query'
+
+const formSchema = z.object({
+    name: z.string().min(3, 'El nombre debe ser de al menos 3 caracteres.'),
+    email: z.string().email(),
+    password: z.string().min(8, 'La contraseña debe ser de al menos 8 caracteres.'),
+    confirmPassword: z.string().min(8, 'La confirmación debe tener al menos 8 caracteres.'),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden.',
+    path: ['confirmPassword'],
+})
 
 const SignUp = () => {
-
     const navigate = useNavigate()
-
-    const formSchema = z.object({
-        name: z.string().min(3, 'El nombre debe ser de al menos 3 caracteres.'),
-        email: z.string().email(),
-        password: z.string().min(8, 'La contraseña debe ser de al menos 8 caracteres.'),
-        confirmPassword: z.string().min(8, 'La confirmación debe tener al menos 8 caracteres.')
-    }).refine((data) => data.password === data.confirmPassword, {
-        message: 'Las contraseñas no coinciden.',
-        path: ['confirmPassword'],
-    })
 
     const form = useForm({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        }
+        defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
     })
 
-    async function onSubmit(values) {
-        try {
+    const registerMutation = useMutation({
+        mutationFn: async (values) => {
             const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/auth/register`, {
-                method: 'post',
-                headers: { 'Content-type': 'application/json' },
-                body: JSON.stringify(values)
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
             })
             const data = await response.json()
-            if (!response.ok) {
-                return showToast('error', data.message)
-            }
+            if (!response.ok) throw new Error(data.message)
+            return data
+        },
+        onSuccess: (data) => {
             showToast('success', data.message)
             navigate(RouteSignIn)
-        } catch (error) {
+        },
+        onError: (error) => {
             showToast('error', error.message)
-        }
-    }
+        },
+    })
 
     return (
         <div className='flex justify-center items-center h-screen w-screen'>
@@ -64,7 +61,10 @@ const SignUp = () => {
                     </div>
                 </div>
                 <FormProvider {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-sm space-y-4">
+                    <form
+                        onSubmit={form.handleSubmit((values) => registerMutation.mutate(values))}
+                        className="w-full max-w-sm space-y-4"
+                    >
                         <div className='flex flex-col gap-2'>
                             <label className="text-sm font-medium">Nombre</label>
                             <Input
@@ -108,7 +108,13 @@ const SignUp = () => {
                             )}
                         </div>
                         <div className='mt-5'>
-                            <Button type="submit" className='w-full'>Crear Cuenta</Button>
+                            <Button
+                                type="submit"
+                                className='w-full'
+                                disabled={registerMutation.isPending}
+                            >
+                                {registerMutation.isPending ? 'Creando cuenta...' : 'Crear Cuenta'}
+                            </Button>
                             <div className='mt-3 text-sm flex justify-center items-center gap-2'>
                                 <p>¿Ya tienes una cuenta?</p>
                                 <Link className='text-blue-500 hover:underline' to={RouteSignIn}>Inicia sesión aquí</Link>
