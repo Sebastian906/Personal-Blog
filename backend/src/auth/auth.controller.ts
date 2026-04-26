@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -25,5 +25,11 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     googleLogin(@Body() body: GoogleLoginDto, @Res({ passthrough: true }) res: express.Response) {
         return this.authService.googleLogin(body.name, body.email, body.avatar ?? '', res);
+    }
+
+    @Get('logout')
+    @HttpCode(HttpStatus.OK)
+    logout(@Res({ passthrough: true }) res: express.Response) {
+        return this.authService.logout(res);
     }
 }

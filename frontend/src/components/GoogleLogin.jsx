@@ -18,6 +18,8 @@ const GoogleLogin = () => {
         mutationFn: async () => {
             const googleResponse = await signInWithPopup(auth, provider)
             const user = googleResponse.user
+            console.log('Google User:', user)
+            console.log('Photo URL:', user.photoURL)
             const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/auth/google-login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -25,7 +27,7 @@ const GoogleLogin = () => {
                 body: JSON.stringify({
                     name: user.displayName,
                     email: user.email,
-                    avatar: user.photoURL,
+                    avatar: user.photoURL || '',
                 }),
             })
             const data = await response.json()
