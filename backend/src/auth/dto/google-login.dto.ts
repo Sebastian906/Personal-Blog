@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class GoogleLoginDto {
     @IsString({ message: 'El nombre debe ser un texto.' })
@@ -8,6 +8,6 @@ export class GoogleLoginDto {
     email!: string;
 
     @IsOptional()
-    @IsUrl({}, { message: 'El avatar debe ser una URL válida.' })
+    @IsString()
     avatar?: string;
 }

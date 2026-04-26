@@ -10,7 +10,7 @@ export class AuthService {
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService
     ) { }
-    
+
     async register(name: string, email: string, password: string, confirmPassword: string) {
         try {
             if (password !== confirmPassword) {
@@ -106,5 +106,18 @@ export class AuthService {
             const message = error instanceof Error ? error.message : 'Error interno del servidor';
             throw new InternalServerErrorException(message);
         }
+    }
+
+    async logout(res: Response) {
+        const isProduction = process.env.NODE_ENV === 'production';
+
+        res.clearCookie('access_token', {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'strict',
+            path: '/',
+        });
+
+        return { success: true, message: 'Cierre de sesión exitoso.' };
     }
 }
