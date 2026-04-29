@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { FormProvider, useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
@@ -14,17 +14,18 @@ import { showToast } from '@/helpers/showToast'
 import { useFetch } from '@/hooks/useFetch'
 import Loading from '@/components/Loading'
 import { IoCameraOutline } from 'react-icons/io5'
+import Dropzone from 'react-dropzone'
 
 const formSchema = z.object({
     name: z.string().min(3, 'El nombre debe ser de al menos 3 caracteres.'),
     email: z.string().email(),
     bio: z.string().min(8, 'La sección sobre mi debe tener al menos 8 caracteres.'),
-    password: z.string(),
-    confirmPassword: z.string()
 })
 
 const Profile = () => {
 
+    const [filePreview, setFilePreview] = useState()
+    const [file, setFile] = useState()
     const currentUser = useUserStore((state) => state.user)
 
     const { data: userData, loading, error } = useFetch(`${getEnv('VITE_BASE_API_URL')}/users/get-user/${currentUser?._id || currentUser?.user?._id}`,
@@ -48,16 +49,33 @@ const Profile = () => {
         }
     }, [userData])
 
-    const loginMutation = useMutation({
+    const updateMutation = useMutation({
         mutationFn: async (values) => {
-            const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            // Filtrar campos vacíos y mantener solo los que cambiarán
+            const dataToSend = {
+                ...(values.name && { name: values.name }),
+                ...(values.email && { email: values.email }),
+                ...(values.bio && { bio: values.bio }),
+                ...(values.password && { password: values.password }),
+            }
+
+            const formData = new FormData()
+            if (file) formData.append('file', file)
+
+            const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/users/update-user/${currentUser?._id || currentUser?.user?._id}`, {
+                method: 'PUT',
                 credentials: 'include',
-                body: JSON.stringify(values),
+                headers: {
+                    'x-form-data': JSON.stringify(dataToSend)
+                },
+                body: formData,
             })
+
             const data = await response.json()
-            if (!response.ok) throw new Error(data.message)
+            if (!response.ok) {
+                const msg = Array.isArray(data.message) ? data.message.join(', ') : data.message
+                throw new Error(msg)
+            }
             return data
         },
         onSuccess: (data) => {
@@ -71,23 +89,37 @@ const Profile = () => {
 
     if (loading) return <Loading />
 
+    const handleFileSection = (files) => {
+        const file = files[0]
+        const preview = URL.createObjectURL(file)
+        setFile(file)
+        setFilePreview(preview)
+    }
+
     return (
         <Card className='max-w-3xl mx-auto bg-slate-100'>
             <CardContent>
                 <div className='flex justify-center items-center mt-10'>
-                    <Avatar className='w-28 h-28 relative group'>
-                        <AvatarImage src={userData?.user?.avatar || currentUser?.avatar} alt={currentUser?.name} />
-                        <AvatarFallback className='text-2xl font-bold'>
-                            {currentUser?.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
-                        </AvatarFallback>
-                        <div className='absolute z-50 w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 justify-center items-center bg-black bg-opacity-20 border-2 border-violet-500 rounded-full group-hover:flex hidden cursor-pointer'>
-                            <IoCameraOutline color='#7c3aed'/>
-                        </div>
-                    </Avatar>
+                    <Dropzone onDrop={acceptedFiles => handleFileSection(acceptedFiles)}>
+                        {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                <Avatar className='w-28 h-28 relative group'>
+                                    <AvatarImage src={filePreview ? filePreview : userData?.user?.avatar || currentUser?.avatar} alt={currentUser?.name} />
+                                    <AvatarFallback className='text-2xl font-bold'>
+                                        {currentUser?.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                    </AvatarFallback>
+                                    <div className='absolute z-50 w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 justify-center items-center bg-black/30 border-2 border-violet-500 rounded-full hidden group-hover:flex cursor-pointer'>
+                                        <IoCameraOutline color='#7c3aed' />
+                                    </div>
+                                </Avatar>
+                            </div>
+                        )}
+                    </Dropzone>
                 </div>
                 <div>
                     <FormProvider {...form}>
-                        <form onSubmit={form.handleSubmit((values) => loginMutation.mutate(values))}>
+                        <form onSubmit={form.handleSubmit((values) => updateMutation.mutate(values))}>
                             <div className='mb-3'>
                                 <label className="text-sm font-medium">Nombre</label>
                                 <Input {...form.register("name")} placeholder="Ingrese su nombre" />
@@ -123,7 +155,7 @@ const Profile = () => {
                                     <p className="text-sm text-red-500">{form.formState.errors.confirmPassword.message}</p>
                                 )}
                             </div>
-                            <Button type="submit" className='w-full' disabled={loginMutation.isPending}>
+                            <Button type="submit" className='w-full' disabled={updateMutation.isPending}>
                                 Guardar Cambios
                             </Button>
                         </form>
