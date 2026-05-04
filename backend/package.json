@@ -32,6 +32,7 @@
     "class-validator": "^0.15.1",
     "cloudinary": "^2.10.0",
     "cookie-parser": "^1.4.7",
+    "entities": "^8.0.0",
     "mongoose": "^9.5.0",
     "multer": "^2.1.1",
     "reflect-metadata": "^0.2.2",

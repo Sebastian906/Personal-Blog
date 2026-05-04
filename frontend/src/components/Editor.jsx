@@ -96,11 +96,15 @@ const DEFAULT_HEX_COLORS = [
 export default function Editor({ props }) {
     const editorWordCountRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
+    const editorInstanceRef = useRef(null);
 
     useEffect(() => {
         setIsLayoutReady(true);
 
-        return () => setIsLayoutReady(false);
+        return () => {
+            setIsLayoutReady(false);
+            editorInstanceRef.current = null;
+        };
     }, []);
 
     const { editorConfig } = useMemo(() => {
@@ -339,7 +343,7 @@ export default function Editor({ props }) {
                 translations: [translations, premiumFeaturesTranslations]
             }
         };
-    }, [isLayoutReady]);
+    }, [isLayoutReady, props?.initialData]);
 
     useEffect(() => {
         if (editorConfig) {
@@ -355,11 +359,19 @@ export default function Editor({ props }) {
                         <CKEditor
                             onChange={props.onChange}
                             onReady={editor => {
+                                editorInstanceRef.current = editor;
                                 const wordCount = editor.plugins.get('WordCount');
-                                editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
+                                // Limpiar contenedor antes de agregar
+                                if (editorWordCountRef.current) {
+                                    editorWordCountRef.current.innerHTML = '';
+                                    editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
+                                }
                             }}
                             onAfterDestroy={() => {
-                                Array.from(editorWordCountRef.current.children).forEach(child => child.remove());
+                                editorInstanceRef.current = null;
+                                if (editorWordCountRef.current) {
+                                    editorWordCountRef.current.innerHTML = '';
+                                }
                             }}
                             editor={ClassicEditor}
                             config={editorConfig}

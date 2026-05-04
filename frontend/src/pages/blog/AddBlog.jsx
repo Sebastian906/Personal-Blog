@@ -12,9 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useFetch } from '@/hooks/useFetch'
 import Dropzone from 'react-dropzone'
 import Editor from '@/components/Editor'
+import { showToast } from '@/helpers/showToast'
+import { useUserStore } from '@/store/useUserStore'
+import { useNavigate } from 'react-router-dom'
+import { RouteBlog } from '@/helpers/RouteName'
 
 const formSchema = z.object({
-    category: z.string().min(3, 'La Categoría debe ser de al menos 3 caracteres.'),
+    author: z.string().min(1, 'El autor es requerido.'),
+    category: z.string().min(1, 'La categoría es requerida.'),
     title: z.string().min(3, 'El título debe ser de al menos 3 caracteres.'),
     slug: z.string().min(3, 'La ficha debe ser de al menos 3 caracteres.'),
     blogContent: z.string().min(3, 'El contenido del blog debe ser de al menos 3 caracteres.'),
@@ -22,8 +27,12 @@ const formSchema = z.object({
 
 const AddBlog = () => {
 
+    const navigate = useNavigate()
+
     const [filePreview, setFilePreview] = useState()
     const [file, setFile] = useState()
+
+    const currentUser = useUserStore((state) => state.user)
 
     const { data: categoryData, loading, error } = useFetch(`${getEnv('VITE_BASE_API_URL')}/category/all`, {
         method: 'GET',
@@ -32,8 +41,14 @@ const AddBlog = () => {
 
     const form = useForm({
         resolver: zodResolver(formSchema),
-        defaultValues: { category: '', title: '', slug: '', blogContent: '' },
+        defaultValues: { author: '', category: '', title: '', slug: '', blogContent: '' },
     })
+
+    useEffect(() => {
+        if (currentUser?._id && !form.getValues('author')) {
+            form.setValue('author', currentUser._id, { shouldValidate: false })
+        }
+    }, [currentUser?._id])
 
     const blogTitle = form.watch('title')
 
@@ -43,28 +58,47 @@ const AddBlog = () => {
                 shouldValidate: true,
             })
         }
-    }, [blogTitle])
+    }, [blogTitle, form.setValue])
 
-    const categoryMutation = useMutation({
-        // mutationFn: async (values) => {
-        //     const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/category/add`, {
-        //         method: 'POST',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({ ...values, icon: selectedIcon }),
-        //     })
-        //     const data = await response.json()
-        //     if (!response.ok) throw new Error(data.message)
-        //     return data
-        // },
-        // onSuccess: (data) => {
-        //     form.reset()
-        //     setSelectedIcon(null)
-        //     showToast('success', data.message)
-        // },
-        // onError: (error) => {
-        //     showToast('error', error.message)
-        // },
-    })
+    const blogMutation = useMutation({
+        mutationFn: async (values) => {
+            if (!currentUser?._id) {
+                throw new Error('Usuario no autenticado');
+            }
+
+            const dataToSend = {
+                author: currentUser._id,
+                category: values.category,
+                title: values.title,
+                slug: values.slug,
+                blogContent: values.blogContent,
+            };
+
+            const formData = new FormData();
+            formData.append('data', JSON.stringify(dataToSend));
+            if (file) formData.append('file', file);
+
+            const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/blogs/add`, {
+                method: 'POST',
+                credentials: 'include',
+                body: formData,
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+            return data;
+        },
+        onSuccess: (data) => {
+            form.reset();
+            setFile();
+            setFilePreview();
+            showToast('success', data.message);
+            navigate(RouteBlog)
+        },
+        onError: (error) => {
+            showToast('error', error.message);
+        },
+    });
 
     const handleFileSection = (files) => {
         const file = files[0]
@@ -75,7 +109,7 @@ const AddBlog = () => {
 
     const handleEditorData = (event, editor) => {
         const data = editor.getData()
-        form.setValue('blogContent', data)
+        form.setValue('blogContent', data, { shouldValidate: true })
     }
 
     return (
@@ -84,12 +118,14 @@ const AddBlog = () => {
                 <CardContent>
                     <FormProvider {...form}>
                         <form
-                            onSubmit={form.handleSubmit((values) => categoryMutation.mutate(values))}
+                            onSubmit={form.handleSubmit((values) => {
+                                return blogMutation.mutate(values);
+                            })}
                             className="w-full space-y-4"
                         >
                             <div className='flex flex-col gap-2'>
                                 <label className="text-sm font-medium">Categoría</label>
-                                <Select onValueChange={form.setValue('category')} defaultValues={form.watch('category')}>
+                                <Select onValueChange={(value) => form.setValue('category', value, { shouldValidate: true })} defaultValues={form.watch('category')}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Seleccionar" />
                                     </SelectTrigger>
@@ -148,8 +184,7 @@ const AddBlog = () => {
                                 <div className='flex flex-col gap-2'>
                                     <label className="text-sm font-medium">Contenido</label>
                                     <Editor
-                                        {...form.register("blogContent")}
-                                        props={{ initialData: '', onchange: handleEditorData }}
+                                        props={{ initialData: '', onChange: handleEditorData }}
                                     />
                                     {form.formState.errors.blogContent && (
                                         <p className="text-sm text-red-500">{form.formState.errors.blogContent.message}</p>
@@ -159,9 +194,9 @@ const AddBlog = () => {
                             <Button
                                 type="submit"
                                 className='w-full'
-                                disabled={categoryMutation.isPending}
+                                disabled={blogMutation.isPending}
                             >
-                                {categoryMutation.isPending ? 'Guardando...' : 'Guardar'}
+                                {blogMutation.isPending ? 'Guardando...' : 'Guardar'}
                             </Button>
                         </form>
                     </FormProvider>
