@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './layout/Layout'
-import { RouteAddBlog, RouteAddCategory, RouteBlog, RouteCategoryDetails, RouteEditBlog, RouteEditCategory, RouteIndex, RouteProfile, RouteSignIn, RouteSignUp } from './helpers/RouteName'
+import { RouteAddBlog, RouteAddCategory, RouteBlog, RouteBlogDetails, RouteCategoryDetails, RouteEditBlog, RouteEditCategory, RouteIndex, RouteProfile, RouteSignIn, RouteSignUp } from './helpers/RouteName'
 import Index from './pages/Index'
 import SignIn from './pages/Signin'
 import SignUp from './pages/SignUp'
@@ -12,6 +12,7 @@ import CategoryDetails from './pages/category/CategoryDetails'
 import AddBlog from './pages/blog/AddBlog'
 import EditBlog from './pages/blog/EditBlog'
 import BlogDetails from './pages/blog/BlogDetails'
+import SingleBlogDetails from './pages/SingleBlogDetails'
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path={RouteEditCategory()} element={<EditCategory />} />
             {/** Blogs */}
             <Route path={RouteAddBlog} element={<AddBlog />} />
+            <Route path={RouteBlogDetails()} element={<SingleBlogDetails />} />
             <Route path={RouteBlog} element={<BlogDetails />} />
             <Route path={RouteEditBlog()} element={<EditBlog />} />
           </Route>

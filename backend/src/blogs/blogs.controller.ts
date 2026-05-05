@@ -28,6 +28,13 @@ export class BlogsController {constructor(private readonly blogService: BlogsSer
         return { success: true, blogs };
     }
 
+    @Get('get-blog/:slug')
+    @HttpCode(HttpStatus.OK)
+    async getBlog(@Param('slug') slug: string) {
+        const blog = await this.blogService.findBySlug(slug);
+        return { success: true, blog };
+    }
+
     @Get('show/:blogId')
     @HttpCode(HttpStatus.OK)
     async showBlog(@Param('blogId') blogId: string) {

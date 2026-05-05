@@ -125,4 +125,21 @@ export class BlogsService {
             throw new InternalServerErrorException(message);
         }
     }
+
+    async findBySlug(slug: string): Promise<BlogDocument> {
+        try {
+            const blog = await this.blogModel
+                .findOne({ slug })
+                .populate('author', 'name avatar role')
+                .populate('category', 'name slug');
+            if (!blog) {
+                throw new NotFoundException('Datos no encontrados.');
+            }
+            return blog;
+        } catch (error) {
+            if (error instanceof NotFoundException) throw error;
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
+    }
 }

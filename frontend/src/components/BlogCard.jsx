@@ -5,6 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { FaRegCalendarAlt } from 'react-icons/fa'
 import userIcon from '@/assets/images/user.png'
 import { Link } from 'react-router-dom'
+import { RouteBlogDetails } from '@/helpers/RouteName'
 
 const BlogCard = ({ props }) => {
 
@@ -26,7 +27,7 @@ const BlogCard = ({ props }) => {
     }
 
     return (
-        <Link to={`/blog/${props.slug}`}>
+        <Link to={RouteBlogDetails(props.category.slug, props.slug)}>
             <Card className='pt-5 hover:shadow-lg transition-shadow cursor-pointer bg-slate-100'>
                 <CardContent>
                     <div className='flex items-center justify-between mb-2'>
