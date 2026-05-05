@@ -16,10 +16,22 @@ import { IoHomeOutline } from 'react-icons/io5'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { FaBlog, FaRegComment } from 'react-icons/fa6'
 import { LuUsers } from 'react-icons/lu'
-import { GoDot } from 'react-icons/go'
 import { RouteBlog, RouteCategoryDetails } from '@/helpers/RouteName'
+import { useFetch } from '@/hooks/useFetch'
+import { getEnv } from '@/helpers/getEnv'
+import { resolveIcon } from '@/helpers/resolveIcon'
 
 const AppSidebar = () => {
+
+    const { data: categoryData } = useFetch(`${getEnv('VITE_BASE_API_URL')}/category/all`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+
+    const sortedCategories = categoryData?.categories?.length > 0
+        ? [...categoryData.categories].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+        : []
+
     return (
         <Sidebar>
             <SidebarHeader className='bg-slate-100'>
@@ -79,14 +91,14 @@ const AppSidebar = () => {
                         Categorias
                     </SidebarGroupLabel>
                     <SidebarMenu>
-                        <SidebarMenuItem>
+                        {sortedCategories.length > 0 && sortedCategories.map(category => <SidebarMenuItem key={category.id}>
                             <SidebarMenuButton asChild>
                                 <Link to="">
-                                    <GoDot />
-                                    <span>Item</span>
+                                    {resolveIcon(category.icon)}
+                                    <span>{category.name}</span>
                                 </Link>
                             </SidebarMenuButton>
-                        </SidebarMenuItem>
+                        </SidebarMenuItem>)}
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
