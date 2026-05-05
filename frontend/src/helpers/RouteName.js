@@ -20,10 +20,11 @@ export const RouteEditBlog = (blog_id) => {
         return `/blog/edit/:blog_id`
     }
 }
-export const RouteBlogDetails = (slug) => {
-    if (slug) {
-        return `/blog/details/${slug}`
-    } else {
-        return `/blog/details/:slug`
+export const RouteBlogDetails = (categorySlug, blogSlug) => {
+    if (categorySlug && blogSlug) {
+        return `/blog/details/${categorySlug}/${blogSlug}`
+    }
+    else {
+        return `/blog/details/:category/:slug` 
     }
 }
