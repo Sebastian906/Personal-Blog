@@ -16,12 +16,15 @@ const ICON_OPTIONS = [
     { name: 'GrCycle', label: 'Técnicas de Programación' },
     { name: 'GrCube', label: 'Prog. Orientada a Objetos' },
     { name: 'TbCodeDots', label: 'Lenguajes de Programación' },
+    { name: 'PiGraph', label: 'Matemáticas Discretas' },
     { name: 'TbBinaryTree', label: 'Estructuras de Datos' },
     { name: 'BsServer', label: 'Bases de Datos Relacionales' },
     { name: 'GiStack', label: 'Bases de Datos No Relacionales' },
     { name: 'PiTreeView', label: 'Administración de BD' },
+    { name: 'PiSigmaBold', label: 'Series, Sucesiones y Aplicaciones' },
     { name: 'FaLaptopCode', label: 'Desarrollo Frontend' },
     { name: 'FaServer', label: 'Desarrollo Backend' },
+    { name: 'TbDeviceMobileCode', label: 'Desarrollo para Dispositivos Móviles' },
     { name: 'FaCodeBranch', label: 'Fundamentos de Ing. de Software' },
     { name: 'GiCubeforce', label: 'Arquitectura de Software' },
     { name: 'FaCheckToSlot', label: 'Calidad en el Desarrollo' },
@@ -29,6 +32,9 @@ const ICON_OPTIONS = [
     { name: 'AiFillCode', label: 'Sistemas Operativos' },
     { name: 'FaHexagonNodes', label: 'Análisis y Diseño de Algoritmos' },
     { name: 'FaCodepen', label: 'HPC y Prog. Concurrente' },
+    { name: 'BiNetworkChart', label: 'Fundamentos de Inteligencia Artificial' },
+    { name: 'LuNetwork', label: 'Ciencia de Datos y Aprendizaje de Máquina' },
+    { name: 'LuChartNetwork', label: 'Aprendizaje Profundo' },
 ]
 
 const formSchema = z.object({
