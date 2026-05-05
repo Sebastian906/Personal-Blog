@@ -53,7 +53,7 @@ export class BlogsService {
             return await this.blogModel
                 .find()
                 .populate('author', 'name avatar role')
-                .populate('category', 'name')
+                .populate('category', 'name slug')
                 .sort({ createdAt: -1 })
                 .lean()
                 .exec();
@@ -68,7 +68,7 @@ export class BlogsService {
             const blog = await this.blogModel
                 .findById(blogId)
                 .populate('author', 'name avatar role')
-                .populate('category', 'name');
+                .populate('category', 'name slug');
             if (!blog) {
                 throw new NotFoundException('Datos no encontrados.');
             }

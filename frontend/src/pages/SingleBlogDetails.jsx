@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getEnv } from '@/helpers/getEnv'
 import { useFetch } from '@/hooks/useFetch'
 import React from 'react'
@@ -8,8 +8,7 @@ import Loading from '@/components/Loading'
 
 const SingleBlogDetails = () => {
     const { category, slug } = useParams()
-    const { data, loading, error } = useFetch(
-        `${getEnv('VITE_BASE_API_URL')}/blogs/get-blog/${slug}`,
+    const { data, loading, error } = useFetch(`${getEnv('VITE_BASE_API_URL')}/blogs/get-blog/${slug}`,
         { method: 'GET', credentials: 'include' },
         [slug]
     )
