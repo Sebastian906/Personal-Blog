@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './categories/category.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { BlogsModule } from './blogs/blogs.module';
     AuthModule,
     CategoryModule,
     BlogsModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
