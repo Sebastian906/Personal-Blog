@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom'
 import { decode } from 'entities'
 import Loading from '@/components/Loading'
 import Comment from '@/components/Comment'
-import CommentList from '@/components/CommentList'
 import CommentCount from '@/components/CommentCount'
 import moment from 'moment'
+import LikeCount from '@/components/LikeCount'
 
 const SingleBlogDetails = () => {
     const { category, slug } = useParams()
@@ -38,6 +38,7 @@ const SingleBlogDetails = () => {
                             </div>
                         </div>
                         <div className='flex items-center gap-5'>
+                            <LikeCount props={{ blogId: data.blog._id }} />
                             <CommentCount props={{ blogId: data.blog._id }} />
                         </div>
                     </div>
