@@ -6,11 +6,13 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { cloudinary } from '../config/cloudinary.config';
 import { encode } from 'entities';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { Category, CategoryDocument } from 'src/categories/schemas/category.schema';
 
 @Injectable()
 export class BlogsService {
     constructor(
         @InjectModel(Blog.name) private blogModel: Model<BlogDocument>,
+        @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
     ) { }
 
     async create(dto: CreateBlogDto, file?: Express.Multer.File): Promise<BlogDocument> {
@@ -136,6 +138,37 @@ export class BlogsService {
                 throw new NotFoundException('Datos no encontrados.');
             }
             return blog;
+        } catch (error) {
+            if (error instanceof NotFoundException) throw error;
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
+    }
+
+
+    async findRelated(categorySlug: string, currentSlug: string): Promise<BlogDocument[]> {
+        try {
+            const category = await this.categoryModel.findOne({ slug: categorySlug }).lean();
+            if (!category) {
+                throw new NotFoundException('Categoría no encontrada.');
+            }
+
+            const categoryId = category._id.toString();
+
+            return await this.blogModel
+                .find({
+                    $expr: {
+                        $and: [
+                            { $eq: [{ $toString: '$category' }, categoryId] },
+                            { $ne: ['$slug', currentSlug] },
+                        ],
+                    },
+                })
+                .sort({ createdAt: 1 })
+                .populate('author', 'name avatar role')
+                .populate('category', 'name slug')
+                .lean()
+                .exec();
         } catch (error) {
             if (error instanceof NotFoundException) throw error;
             const message = error instanceof Error ? error.message : 'Error interno del servidor';
