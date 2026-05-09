@@ -7,7 +7,8 @@ import { plainToClass } from 'class-transformer';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @Controller('blogs')
-export class BlogsController {constructor(private readonly blogService: BlogsService) { }
+export class BlogsController {
+        constructor(private readonly blogService: BlogsService) { }
 
     @Post('add')
     @HttpCode(HttpStatus.OK)
@@ -84,5 +85,15 @@ export class BlogsController {constructor(private readonly blogService: BlogsSer
             throw new BadRequestException(messages);
         }
         return dto;
+    }
+
+    @Get('get-related-blogs/:category/:blog')
+    @HttpCode(HttpStatus.OK)
+    async getRelatedBlogs(
+        @Param('category') category: string,
+        @Param('blog') blog: string,
+    ) {
+        const relatedBlog = await this.blogService.findRelated(category, blog);
+        return { success: true, relatedBlog };
     }
 }
