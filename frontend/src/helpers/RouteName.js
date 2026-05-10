@@ -28,3 +28,10 @@ export const RouteBlogDetails = (categorySlug, blogSlug) => {
         return `/blog/details/:category/:slug` 
     }
 }
+export const RouteBlogByCategory = (category) => {
+    if (category) {
+        return `/blog/${category}`
+    } else {
+        return `/blog/:category`
+    }
+}

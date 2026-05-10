@@ -96,4 +96,11 @@ export class BlogsController {
         const relatedBlog = await this.blogService.findRelated(category, blog);
         return { success: true, relatedBlog };
     }
+
+    @Get('get-blog-by-category/:category')
+    @HttpCode(HttpStatus.OK)
+    async getBlogByCategory(@Param('category') category: string) {
+        const result = await this.blogService.findByCategory(category);
+        return { success: true, ...result };
+    }
 }

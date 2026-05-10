@@ -16,7 +16,7 @@ import { IoHomeOutline } from 'react-icons/io5'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { FaBlog, FaRegComment } from 'react-icons/fa6'
 import { LuUsers } from 'react-icons/lu'
-import { RouteBlog, RouteCategoryDetails } from '@/helpers/RouteName'
+import { RouteBlog, RouteBlogByCategory, RouteCategoryDetails } from '@/helpers/RouteName'
 import { useFetch } from '@/hooks/useFetch'
 import { getEnv } from '@/helpers/getEnv'
 import { resolveIcon } from '@/helpers/resolveIcon'
@@ -93,7 +93,7 @@ const AppSidebar = () => {
                     <SidebarMenu>
                         {sortedCategories.length > 0 && sortedCategories.map(category => <SidebarMenuItem key={category.id}>
                             <SidebarMenuButton asChild>
-                                <Link to="">
+                                <Link to={RouteBlogByCategory(category.slug)}>
                                     {resolveIcon(category.icon)}
                                     <span>{category.name}</span>
                                 </Link>
