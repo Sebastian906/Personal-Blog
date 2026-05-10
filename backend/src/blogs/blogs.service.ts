@@ -175,4 +175,33 @@ export class BlogsService {
             throw new InternalServerErrorException(message);
         }
     }
+
+    async findByCategory(categorySlug: string): Promise<{ blogs: BlogDocument[]; categoryData: CategoryDocument }> {
+        try {
+            const categoryData = await this.categoryModel.findOne({ slug: categorySlug }).lean();
+            if (!categoryData) {
+                throw new NotFoundException('Datos de la categoría no encontrados.');
+            }
+
+            const categoryId = categoryData._id.toString();
+
+            const blogs = await this.blogModel
+                .find({
+                    $expr: {
+                        $eq: [{ $toString: '$category' }, categoryId],
+                    },
+                })
+                .populate('author', 'name avatar role')
+                .populate('category', 'name slug')
+                .sort({ createdAt: -1 })
+                .lean()
+                .exec();
+
+            return { blogs, categoryData };
+        } catch (error) {
+            if (error instanceof NotFoundException) throw error;
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
+    }
 }
