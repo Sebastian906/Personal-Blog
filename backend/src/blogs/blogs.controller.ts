@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UploadedFile, UseInterceptors, BadRequestException, Get, Param, Put, Delete } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UploadedFile, UseInterceptors, BadRequestException, Get, Param, Put, Delete, Query } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { ImageFileInterceptor } from '../common/interceptors/file-upload.interceptor';
@@ -26,6 +26,13 @@ export class BlogsController {
     @HttpCode(HttpStatus.OK)
     async showAllBlogs() {
         const blogs = await this.blogService.findAll();
+        return { success: true, blogs };
+    }
+
+    @Get('search')
+    @HttpCode(HttpStatus.OK)
+    async searchBlogs(@Query('q') q: string) {
+        const blogs = await this.blogService.search(q ?? '');
         return { success: true, blogs };
     }
 
