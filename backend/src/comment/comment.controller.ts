@@ -33,4 +33,11 @@ export class CommentController {
         await this.commentsService.deleteById(commentId);
         return { success: true, message: 'Comentario eliminado.' };
     }
+
+    @Get('get-all-comments')
+    @HttpCode(HttpStatus.OK)
+    async getAllComments() {
+        const comments = await this.commentsService.findAll();
+        return { success: true, comments };
+    }
 }

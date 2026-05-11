@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { Model } from 'mongoose';
@@ -69,5 +69,30 @@ export class UsersService {
         const newUser = user.toObject({ getters: true }) as unknown as Record<string, unknown>;
         delete newUser.password;
         return newUser as Omit<UserDocument, 'password'>;
+    }
+
+    async findAll(): Promise<UserDocument[]> {
+        try {
+            return await this.userModel
+                .find()
+                .sort({ createdAt: -1 })
+                .exec();
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
+    }
+
+    async deleteById(userId: string): Promise<void> {
+        try {
+            const user = await this.userModel.findByIdAndDelete(userId);
+            if (!user) {
+                throw new NotFoundException('Usuario no encontrado.');
+            }
+        } catch (error) {
+            if (error instanceof NotFoundException) throw error;
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
     }
 }

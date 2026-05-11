@@ -10,6 +10,7 @@ export const deleteData = async (endpoint) => {
             if (!response.ok) {
                 throw new Error(response.statusText)
             }
+            return true
         } catch (error) {
             console.log(error);
             return false

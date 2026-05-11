@@ -53,4 +53,19 @@ export class CommentService {
             throw new InternalServerErrorException(message);
         }
     }
+
+    async findAll(): Promise<CommentDocument[]> {
+        try {
+            return await this.commentModel
+                .find()
+                .populate('author', 'name avatar role')
+                .populate('blogId', 'title slug')
+                .sort({ createdAt: -1 })
+                .lean()
+                .exec();
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
+    }
 }
