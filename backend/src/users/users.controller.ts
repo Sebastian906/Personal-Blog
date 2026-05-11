@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, NotFoundException, Param, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ImageFileInterceptor } from '../common/interceptors/file-upload.interceptor';
@@ -46,5 +46,19 @@ export class UsersController {
             message: 'Datos actualizados.',
             user,
         };
+    }
+
+    @Get('get-all-users')
+    @HttpCode(HttpStatus.OK)
+    async getAllUsers() {
+        const users = await this.usersService.findAll();
+        return { success: true, users };
+    }
+
+    @Delete('delete/:userId')
+    @HttpCode(HttpStatus.OK)
+    async deleteUser(@Param('userId') userId: string) {
+        await this.usersService.deleteById(userId);
+        return { success: true, message: 'Usuario eliminado.' };
     }
 }

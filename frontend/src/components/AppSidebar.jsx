@@ -16,7 +16,7 @@ import { IoHomeOutline } from 'react-icons/io5'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { FaBlog, FaRegComment } from 'react-icons/fa6'
 import { LuUsers } from 'react-icons/lu'
-import { RouteBlog, RouteBlogByCategory, RouteCategoryDetails } from '@/helpers/RouteName'
+import { RouteBlog, RouteBlogByCategory, RouteCategoryDetails, RouteCommentDetails, RouteUsers } from '@/helpers/RouteName'
 import { useFetch } from '@/hooks/useFetch'
 import { getEnv } from '@/helpers/getEnv'
 import { resolveIcon } from '@/helpers/resolveIcon'
@@ -70,7 +70,7 @@ const AppSidebar = () => {
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="">
+                                <Link to={RouteCommentDetails}>
                                     <FaRegComment />
                                     <span>Comentarios</span>
                                 </Link>
@@ -78,7 +78,7 @@ const AppSidebar = () => {
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="">
+                                <Link to={RouteUsers}>
                                     <LuUsers />
                                     <span>Usuarios</span>
                                 </Link>
