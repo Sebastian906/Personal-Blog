@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './layout/Layout'
-import { RouteAddBlog, RouteAddCategory, RouteBlog, RouteBlogByCategory, RouteBlogDetails, RouteCategoryDetails, RouteEditBlog, RouteEditCategory, RouteIndex, RouteProfile, RouteSignIn, RouteSignUp } from './helpers/RouteName'
+import { RouteAddBlog, RouteAddCategory, RouteBlog, RouteBlogByCategory, RouteBlogDetails, RouteCategoryDetails, RouteEditBlog, RouteEditCategory, RouteIndex, RouteProfile, RouteSearch, RouteSignIn, RouteSignUp } from './helpers/RouteName'
 import Index from './pages/Index'
 import SignIn from './pages/Signin'
 import SignUp from './pages/SignUp'
@@ -14,6 +14,7 @@ import EditBlog from './pages/blog/EditBlog'
 import BlogDetails from './pages/blog/BlogDetails'
 import SingleBlogDetails from './pages/SingleBlogDetails'
 import BlogByCategory from './pages/blog/BlogByCategory'
+import SearchResult from './pages/SearchResult'
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
             <Route path={RouteBlogByCategory()} element={<BlogByCategory />} />
             <Route path={RouteBlog} element={<BlogDetails />} />
             <Route path={RouteEditBlog()} element={<EditBlog />} />
+            <Route path={RouteSearch()} element={<SearchResult />} />
           </Route>
           <Route path={RouteSignIn} element={<SignIn />} />
           <Route path={RouteSignUp} element={<SignUp />} />

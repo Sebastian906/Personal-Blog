@@ -35,3 +35,10 @@ export const RouteBlogByCategory = (category) => {
         return `/blog/:category`
     }
 }
+export const RouteSearch = (q) => {
+    if (q) {
+        return `/search?q=${q}`
+    } else {
+        return `/search`
+    }
+}

@@ -204,4 +204,19 @@ export class BlogsService {
             throw new InternalServerErrorException(message);
         }
     }
+
+    async search(q: string): Promise<BlogDocument[]> {
+        try {
+            return await this.blogModel
+                .find({ title: { $regex: q, $options: 'i' } })
+                .populate('author', 'name avatar role')
+                .populate('category', 'name slug')
+                .sort({ createdAt: -1 })
+                .lean()
+                .exec();
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Error interno del servidor';
+            throw new InternalServerErrorException(message);
+        }
+    }
 }
