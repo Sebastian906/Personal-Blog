@@ -66,6 +66,7 @@ const AddCategory = () => {
             const response = await fetch(`${getEnv('VITE_BASE_API_URL')}/category/add`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ ...values, icon: selectedIcon }),
             })
             const data = await response.json()
@@ -124,8 +125,8 @@ const AddCategory = () => {
                                             title={label}
                                             onClick={() => setSelectedIcon(prev => prev === name ? null : name)}
                                             className={`flex flex-col items-center gap-1 p-2 rounded-md border text-xs transition-colors ${selectedIcon === name
-                                                    ? 'bg-primary text-primary-foreground border-primary'
-                                                    : 'bg-white border-border hover:bg-slate-200'
+                                                ? 'bg-primary text-primary-foreground border-primary'
+                                                : 'bg-white border-border hover:bg-slate-200'
                                                 }`}
                                         >
                                             {resolveIcon(name, { size: 20 })}

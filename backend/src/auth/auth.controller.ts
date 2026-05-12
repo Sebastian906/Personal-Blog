@@ -1,13 +1,14 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import express from 'express';
 import { GoogleLoginDto } from './dto/google-login.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(private readonly authService: AuthService) { }
 
     @Post('register')
     @HttpCode(HttpStatus.OK)
@@ -29,6 +30,7 @@ export class AuthController {
 
     @Get('logout')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     logout(@Res({ passthrough: true }) res: express.Response) {
         return this.authService.logout(res);
     }

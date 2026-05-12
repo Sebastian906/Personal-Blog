@@ -11,9 +11,11 @@ export const useFetch = (url, options = {}, dependencies = []) => {
             try {
                 const response = await fetch(url, options)
                 const responseData = await response.json()
+
                 if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}, ${response.status} `)
+                    throw new Error(responseData?.message || `Error: ${response.statusText}, ${response.status} `)
                 }
+
                 setData(responseData)
                 setError()
             } catch (error) {
