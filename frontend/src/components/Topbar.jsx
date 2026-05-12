@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '@/assets/images/logo.png'
 import { Button } from './ui/button'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,9 +15,14 @@ import { IoLogOutOutline } from 'react-icons/io5'
 import { useMutation } from '@tanstack/react-query'
 import { showToast } from '@/helpers/showToast'
 import { getEnv } from '@/helpers/getEnv'
+import { IoMdSearch } from "react-icons/io";
+import { AiOutlineMenu } from "react-icons/ai";
+import { useSidebar } from './ui/sidebar'
 
 const Topbar = () => {
 
+    const [showSearch, setShowSearch] = useState(false)
+    const { toggleSidebar } = useSidebar()
     const user = useUserStore((state) => state.user)
     const isLogginIn = useUserStore((state) => state.isLogginIn)
     const navigate = useNavigate()
@@ -44,15 +49,37 @@ const Topbar = () => {
         },
     })
 
+    const toggleSearch = () => {
+        setShowSearch(!showSearch)
+    }
+
     return (
         <div className='flex justify-between items-center h-16 fixed w-full z-20 px-5 border-b bg-slate-100'>
-            <div>
-                <img src={logo} alt="Logo" />
+            <div className='flex justify-center items-center gap-2'>
+                <button
+                    type='button'
+                    className='md:hidden'
+                    onClick={toggleSidebar}
+                >
+                    <AiOutlineMenu size={25} />
+                </button>
+                <Link to={RouteIndex}>
+                    <img src={logo} alt="Logo" className='md:w-auto w-48' />
+                </Link>
             </div>
             <div className='w-125'>
-                <SearchBox />
+                <div className={`md:relative md:block absolute bg-slate-100 left-0 w-full md:top-0 top-14 md:p-6 p-5 ${showSearch ? 'block' : 'hidden'}`}>
+                    <SearchBox />
+                </div>
             </div>
-            <div>
+            <div className='flex items-center gap-5'>
+                <button
+                    onClick={toggleSearch}
+                    type='button'
+                    className='md:hidden block'
+                >
+                    <IoMdSearch size={25} />
+                </button>
                 {!isLogginIn ?
                     <Button asChild className='rounded-full h-10'>
                         <Link to={RouteSignIn}>

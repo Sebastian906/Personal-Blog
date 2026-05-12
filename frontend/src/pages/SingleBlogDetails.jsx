@@ -21,10 +21,10 @@ const SingleBlogDetails = () => {
     if (loading) return <Loading />
 
     return (
-        <div className='flex justify-between gap-20'>
+        <div className='md:flex-nowrap flex-wrap flex justify-between gap-20'>
             {data?.blog && (
                 <>
-                    <div className='border rounded w-[70%] p-5'>
+                    <div className='border rounded md:w-[70%] w-full p-5'>
                         <h1 className='text-2xl font-bold mb-5'>{data.blog.title}</h1>
                         <div className='flex justify-between items-center'>
                             <div className='flex items-center gap-5'>
@@ -52,7 +52,7 @@ const SingleBlogDetails = () => {
                             <Comment props={{ blogId: data.blog._id }} />
                         </div>
                     </div>
-                    <div className='border rounded w-[30%] p-5'>
+                    <div className='border rounded md:w-[30%] w-full p-5'>
                         <RelatedBlog props={{
                             category: data.blog.category?.slug ?? category,
                             currentBlog: slug,
