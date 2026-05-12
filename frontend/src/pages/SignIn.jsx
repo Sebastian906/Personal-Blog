@@ -12,6 +12,7 @@ import { getEnv } from '@/helpers/getEnv'
 import { useMutation } from '@tanstack/react-query'
 import { useUserStore } from '@/store/useUserStore'
 import GoogleLogin from '@/components/GoogleLogin'
+import logo from '@/assets/images/logo.png'
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -52,6 +53,11 @@ const SignIn = () => {
     return (
         <div className='flex justify-center items-center h-screen w-screen'>
             <Card className='w-100 p-4'>
+                <div className='flex justify-center items-center mb-2'>
+                    <Link to={RouteIndex}>
+                        <img src={logo} alt="Logo" />
+                    </Link>
+                </div>
                 <h1 className='text-2xl font-bold text-center mb-5'>Iniciar Sesión</h1>
                 <div>
                     <GoogleLogin />

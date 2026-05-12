@@ -5,6 +5,7 @@ import { BlogsController } from './blogs.controller';
 import { Blog, BlogSchema } from './schemas/blog.schema';
 import { ConfigModule } from '@nestjs/config';
 import { Category, CategorySchema } from 'src/categories/schemas/category.schema';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [
@@ -13,9 +14,10 @@ import { Category, CategorySchema } from 'src/categories/schemas/category.schema
       { name: Category.name, schema: CategorySchema },
     ]),
     ConfigModule,
+    CommonModule,
   ],
   providers: [BlogsService],
   controllers: [BlogsController],
   exports: [BlogsService],
 })
-export class BlogsModule {}
+export class BlogsModule { }

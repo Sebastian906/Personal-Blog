@@ -13,23 +13,23 @@ import { FaTrashAlt } from 'react-icons/fa'
 const Comments = () => {
 
     const [refreshData, setRefreshData] = useState(false)
-    
-        const { data, loading, error } = useFetch(`${getEnv('VITE_BASE_API_URL')}/comment/get-all-comments`, {
-            method: 'GET',
-            credentials: 'include'
-        }, [refreshData])
-    
-        const handleDelete = async (id) => {
-            const response = await deleteData(`${getEnv('VITE_BASE_API_URL')}/comment/delete/${id}`)
-            if (response) {
-                setRefreshData(!refreshData)
-                showToast('success', 'Comentario eliminado correctamente.')
-            } else {
-                showToast('error', 'Error al eliminar el comentario.')
-            }
+
+    const { data, loading, error } = useFetch(`${getEnv('VITE_BASE_API_URL')}/comment/get-all-comments`, {
+        method: 'GET',
+        credentials: 'include'
+    }, [refreshData])
+
+    const handleDelete = async (id) => {
+        const response = await deleteData(`${getEnv('VITE_BASE_API_URL')}/comment/delete/${id}`)
+        if (response) {
+            setRefreshData(!refreshData)
+            showToast('success', 'Comentario eliminado correctamente.')
+        } else {
+            showToast('error', 'Error al eliminar el comentario.')
         }
-    
-        if (loading) return <Loading />
+    }
+
+    if (loading) return <Loading />
 
     return (
         <div>

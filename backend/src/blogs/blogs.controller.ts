@@ -1,17 +1,23 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UploadedFile, UseInterceptors, BadRequestException, Get, Param, Put, Delete, Query } from '@nestjs/common';
+import {
+    Body, Controller, HttpCode, HttpStatus, Post, UploadedFile,
+    UseInterceptors, BadRequestException, Get, Param, Put, Delete,
+    Query, UseGuards,
+} from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { ImageFileInterceptor } from '../common/interceptors/file-upload.interceptor';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('blogs')
 export class BlogsController {
-        constructor(private readonly blogService: BlogsService) { }
+    constructor(private readonly blogService: BlogsService) { }
 
     @Post('add')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ImageFileInterceptor())
     async addBlog(
         @Body() body: any,
@@ -45,6 +51,7 @@ export class BlogsController {
 
     @Get('show/:blogId')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     async showBlog(@Param('blogId') blogId: string) {
         const blog = await this.blogService.findById(blogId);
         return { success: true, blog };
@@ -52,6 +59,7 @@ export class BlogsController {
 
     @Put('update/:blogId')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ImageFileInterceptor())
     async updateBlog(
         @Param('blogId') blogId: string,
@@ -65,12 +73,12 @@ export class BlogsController {
 
     @Delete('delete/:blogId')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     async deleteBlog(@Param('blogId') blogId: string) {
         await this.blogService.deleteById(blogId);
         return { success: true, message: 'Blog eliminado correctamente.' };
     }
 
-    // Método privado reutilizable para parsear y validar el campo 'data'
     private async parseAndValidate<T extends object>(
         cls: new () => T,
         rawData: any,

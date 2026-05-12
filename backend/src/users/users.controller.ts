@@ -1,9 +1,15 @@
-import { BadRequestException, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+    BadRequestException, Controller, Delete, Get, HttpCode,
+    HttpStatus, NotFoundException, Param, Put, Req, UploadedFile,
+    UseGuards, UseInterceptors,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ImageFileInterceptor } from '../common/interceptors/file-upload.interceptor';
 import express from 'express';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
@@ -14,11 +20,7 @@ export class UsersController {
         if (!user) {
             throw new NotFoundException('Usuario no encontrado.');
         }
-        return {
-            success: true,
-            message: 'Datos del usuario obtenidos.',
-            user,
-        };
+        return { success: true, message: 'Datos del usuario obtenidos.', user };
     }
 
     @Put('update-user/:userId')
@@ -41,11 +43,7 @@ export class UsersController {
         if (!user) {
             throw new NotFoundException('Usuario no encontrado.');
         }
-        return {
-            success: true,
-            message: 'Datos actualizados.',
-            user,
-        };
+        return { success: true, message: 'Datos actualizados.', user };
     }
 
     @Get('get-all-users')

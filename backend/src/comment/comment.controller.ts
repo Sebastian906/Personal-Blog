@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import * as currentUserDecorator from '../common/decorators/current-user.decorator';
 
 @Controller('comment')
 export class CommentController {
@@ -8,6 +10,7 @@ export class CommentController {
 
     @Post('add')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     async addComment(@Body() dto: CreateCommentDto) {
         const comment = await this.commentsService.create(dto);
         return { success: true, message: 'Comentario publicado.', comment };
@@ -29,6 +32,7 @@ export class CommentController {
 
     @Delete('delete/:commentId')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     async deleteComment(@Param('commentId') commentId: string) {
         await this.commentsService.deleteById(commentId);
         return { success: true, message: 'Comentario eliminado.' };
@@ -36,8 +40,9 @@ export class CommentController {
 
     @Get('get-all-comments')
     @HttpCode(HttpStatus.OK)
-    async getAllComments() {
-        const comments = await this.commentsService.findAll();
+    @UseGuards(JwtAuthGuard)
+    async getAllComments(@currentUserDecorator.CurrentUser() user: currentUserDecorator.JwtPayload) {
+        const comments = await this.commentsService.findAll(user);
         return { success: true, comments };
     }
 }

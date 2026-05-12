@@ -4,17 +4,9 @@ import { Button } from './ui/button'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdLogin } from 'react-icons/md'
 import SearchBox from './SearchBox'
-import { RouteIndex, RouteProfile, RouteSignIn } from '@/helpers/RouteName'
+import { RouteAddBlog, RouteIndex, RouteProfile, RouteSignIn } from '@/helpers/RouteName'
 import { useUserStore } from '@/store/useUserStore'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import usericon from '@/assets/images/user.png'
 import { FaRegUser } from 'react-icons/fa6'
@@ -92,7 +84,7 @@ const Topbar = () => {
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild className='cursor-pointer'>
-                                        <Link to=''>
+                                        <Link to={RouteAddBlog}>
                                             <FaPlus className='mr-2' />
                                             <span>Crear Blog</span>
                                         </Link>

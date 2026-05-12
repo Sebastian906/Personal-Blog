@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { BlogLikeService } from './blog-like.service';
 import { DoLikeDto } from './dto/do-like.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('blog-like')
 export class BlogLikeController {
@@ -8,6 +9,7 @@ export class BlogLikeController {
 
     @Post('do-like')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
     async doLike(@Body() dto: DoLikeDto) {
         return this.blogLikeService.doLike(dto);
     }

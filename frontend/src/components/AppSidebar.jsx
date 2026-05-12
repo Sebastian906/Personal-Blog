@@ -1,27 +1,21 @@
 import React from 'react'
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { Link } from 'react-router-dom'
 import logo from '@/assets/images/logo.png'
 import { IoHomeOutline } from 'react-icons/io5'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { FaBlog, FaRegComment } from 'react-icons/fa6'
 import { LuUsers } from 'react-icons/lu'
-import { RouteBlog, RouteBlogByCategory, RouteCategoryDetails, RouteCommentDetails, RouteUsers } from '@/helpers/RouteName'
+import { RouteBlog, RouteBlogByCategory, RouteCategoryDetails, RouteCommentDetails, RouteIndex, RouteUsers } from '@/helpers/RouteName'
 import { useFetch } from '@/hooks/useFetch'
 import { getEnv } from '@/helpers/getEnv'
 import { resolveIcon } from '@/helpers/resolveIcon'
+import { useUserStore } from '@/store/useUserStore'
 
 const AppSidebar = () => {
+
+    const user = useUserStore((state) => state.user)
+    const isLogginIn = useUserStore((state) => state.isLogginIn)
 
     const { data: categoryData } = useFetch(`${getEnv('VITE_BASE_API_URL')}/category/all`, {
         method: 'GET',
@@ -46,33 +40,39 @@ const AppSidebar = () => {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="">
+                                <Link to={RouteIndex}>
                                     <IoHomeOutline />
                                     <span>Inicio</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
+                        {isLogginIn && user?.role === 'admin'
+                            ? <>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link to={RouteBlog}>
+                                            <FaBlog />
+                                            <span>Blogs</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link to={RouteCommentDetails}>
+                                            <FaRegComment />
+                                            <span>Comentarios</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            </>
+                            :
+                            <></>
+                        }
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
                                 <Link to={RouteCategoryDetails}>
                                     <BiCategoryAlt />
                                     <span>Categorias</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton asChild>
-                                <Link to={RouteBlog}>
-                                    <FaBlog />
-                                    <span>Blogs</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton asChild>
-                                <Link to={RouteCommentDetails}>
-                                    <FaRegComment />
-                                    <span>Comentarios</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
