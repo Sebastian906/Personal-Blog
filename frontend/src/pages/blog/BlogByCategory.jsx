@@ -21,7 +21,7 @@ const BlogByCategory = () => {
                 {resolveIcon(blogData?.categoryData?.icon, { size: 28 })}
                 <h4>{blogData?.categoryData?.name}</h4>
             </div>
-            <div className='grid grid-cols-3 gap-10'>
+            <div className='grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
                 {blogData?.blogs?.length > 0
                     ?
                     blogData.blogs.map(blog => <BlogCard key={blog._id} props={blog} />)
