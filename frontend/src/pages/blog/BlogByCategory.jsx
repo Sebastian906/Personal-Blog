@@ -17,7 +17,7 @@ const BlogByCategory = () => {
 
     return (
         <>
-            <div className='flex items-center gap-3 text-2xl font-bold text-violet-700 border-b pb-3 mb-5'>
+            <div className='flex items-center gap-3 text-2xl font-bold text-violet-700 dark:text-violet-400 border-b dark:border-slate-700 pb-3 mb-5'>
                 {resolveIcon(blogData?.categoryData?.icon, { size: 28 })}
                 <h4>{blogData?.categoryData?.name}</h4>
             </div>
@@ -25,8 +25,8 @@ const BlogByCategory = () => {
                 {blogData?.blogs?.length > 0
                     ?
                     blogData.blogs.map(blog => <BlogCard key={blog._id} props={blog} />)
-                    : 
-                    <div className='col-span-3'>Datos no encontrados.</div>
+                    :
+                    <div className='col-span-3 dark:text-slate-300'>Datos no encontrados.</div>
                 }
             </div>
         </>

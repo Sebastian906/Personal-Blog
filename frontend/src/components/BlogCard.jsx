@@ -28,7 +28,7 @@ const BlogCard = ({ props }) => {
 
     return (
         <Link to={RouteBlogDetails(props.category.slug, props.slug)}>
-            <Card className='pt-5 hover:shadow-lg transition-shadow cursor-pointer bg-slate-100'>
+            <Card className='pt-5 hover:shadow-lg transition-shadow cursor-pointer bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 <CardContent>
                     <div className='flex items-center justify-between mb-2'>
                         <div className='flex items-center gap-2'>
@@ -36,7 +36,7 @@ const BlogCard = ({ props }) => {
                                 <AvatarImage src={props.author?.avatar || userIcon} alt={props.author?.name} />
                                 <AvatarFallback>{getInitials(props.author?.name)}</AvatarFallback>
                             </Avatar>
-                            <span className='font-medium'>{props.author?.name}</span>
+                            <span className='font-medium dark:text-slate-100'>{props.author?.name}</span>
                         </div>
                         {props.author?.role === 'admin' &&
                             <Badge className='bg-violet-500 text-white hover:bg-violet-600'>Admin</Badge>
@@ -46,11 +46,11 @@ const BlogCard = ({ props }) => {
                         <img src={props.featuredImage} className='rounded w-full h-48 object-cover' />
                     </div>
                     <div>
-                        <p className='flex items-center gap-2 mb-2 text-sm text-gray-500'>
+                        <p className='flex items-center gap-2 mb-2 text-sm text-gray-500 dark:text-slate-400'>
                             <FaRegCalendarAlt />
                             <span>{formatDate(props.createdAt)}</span>
                         </p>
-                        <h2 className='text-2xl font-bold line-clamp-2'>
+                        <h2 className='text-2xl font-bold line-clamp-2 dark:text-slate-100'>
                             {props.title}
                         </h2>
                     </div>

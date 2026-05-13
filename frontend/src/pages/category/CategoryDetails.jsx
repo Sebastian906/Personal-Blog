@@ -40,7 +40,7 @@ const CategoryDetails = () => {
 
     return (
         <div>
-            <Card className='bg-slate-100'>
+            <Card className='bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 {isAdmin && (
                     <CardHeader>
                         <div>
@@ -70,7 +70,7 @@ const CategoryDetails = () => {
                                             <TableCell className='flex gap-2'>
                                                 <Button
                                                     variant='outline'
-                                                    className='bg-slate-100 hover:bg-violet-500 hover:text-white'
+                                                    className='bg-slate-100 dark:bg-slate-800 hover:bg-violet-500 hover:text-white'
                                                     asChild
                                                 >
                                                     <Link to={RouteEditCategory(category._id)}>
@@ -79,7 +79,7 @@ const CategoryDetails = () => {
                                                 </Button>
                                                 <Button
                                                     variant='outline'
-                                                    className='bg-slate-100 hover:bg-violet-500 hover:text-white'
+                                                    className='bg-slate-100 dark:bg-slate-800 hover:bg-violet-500 hover:text-white'
                                                     onClick={() => handleDelete(category._id)}
                                                     aria-label={`Eliminar ${category.name}`}
                                                 >

@@ -85,7 +85,7 @@ const AddCategory = () => {
 
     return (
         <div>
-            <Card className='pt-5 max-w-3xl mx-auto bg-slate-100'>
+            <Card className='pt-5 max-w-3xl mx-auto bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 <CardContent>
                     <FormProvider {...form}>
                         <form
@@ -93,29 +93,31 @@ const AddCategory = () => {
                             className="w-full space-y-4"
                         >
                             <div className='flex flex-col gap-2'>
-                                <label className="text-sm font-medium">Nombre</label>
+                                <label className="text-sm font-medium dark:text-slate-100">Nombre</label>
                                 <Input
                                     {...form.register("name")}
                                     placeholder="Ingrese la categoria"
+                                    className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400'
                                 />
                                 {form.formState.errors.name && (
                                     <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
                                 )}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <label className="text-sm font-medium">Ficha</label>
+                                <label className="text-sm font-medium dark:text-slate-100">Ficha</label>
                                 <Input
                                     {...form.register("slug")}
                                     placeholder="Ingrese la ficha"
+                                    className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400'
                                 />
                                 {form.formState.errors.slug && (
                                     <p className="text-sm text-red-500">{form.formState.errors.slug.message}</p>
                                 )}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <label className="text-sm font-medium">
+                                <label className="text-sm font-medium dark:text-slate-100">
                                     Ícono{' '}
-                                    <span className="text-muted-foreground text-xs">(opcional)</span>
+                                    <span className="text-muted-foreground dark:text-slate-400 text-xs">(opcional)</span>
                                 </label>
                                 <div className='grid grid-cols-6 gap-2'>
                                     {ICON_OPTIONS.map(({ name, label }) => (
@@ -126,7 +128,7 @@ const AddCategory = () => {
                                             onClick={() => setSelectedIcon(prev => prev === name ? null : name)}
                                             className={`flex flex-col items-center gap-1 p-2 rounded-md border text-xs transition-colors ${selectedIcon === name
                                                 ? 'bg-primary text-primary-foreground border-primary'
-                                                : 'bg-white border-border hover:bg-slate-200'
+                                                : 'bg-white dark:bg-slate-700 border-border dark:border-slate-600 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600'
                                                 }`}
                                         >
                                             {resolveIcon(name, { size: 20 })}
@@ -134,9 +136,9 @@ const AddCategory = () => {
                                     ))}
                                 </div>
                                 {selectedIcon && (
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-xs text-muted-foreground dark:text-slate-400">
                                         Seleccionado:{' '}
-                                        <code className="bg-slate-200 px-1 rounded">{selectedIcon}</code>
+                                        <code className="bg-slate-200 dark:bg-slate-700 dark:text-slate-100 px-1 rounded">{selectedIcon}</code>
                                         {' — '}{ICON_OPTIONS.find(i => i.name === selectedIcon)?.label}
                                     </p>
                                 )}

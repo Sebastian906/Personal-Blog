@@ -33,23 +33,23 @@ const Comments = () => {
 
     return (
         <div>
-            <Card className='bg-slate-100'>
+            <Card className='bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 <CardContent>
                     <Table>
-                        <TableCaption>Lista de Comentarios.</TableCaption>
+                        <TableCaption className='dark:text-slate-400'>Lista de Comentarios.</TableCaption>
                         <TableHeader>
-                            <TableRow>
-                                <TableHead className="font-bold">Blog</TableHead>
-                                <TableHead className="font-bold">Hecho por</TableHead>
-                                <TableHead className="font-bold">Fecha</TableHead>
-                                <TableHead className="font-bold">Comentario</TableHead>
-                                <TableHead className="font-bold">Acciones</TableHead>
+                            <TableRow className='dark:border-slate-700'>
+                                <TableHead className="font-bold dark:text-slate-100">Blog</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Hecho por</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Fecha</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Comentario</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {data?.comments?.length > 0 ?
                                 data.comments.map(comment => (
-                                    <TableRow key={comment._id}>
+                                    <TableRow key={comment._id} className='dark:border-slate-700 dark:text-slate-200'>
                                         <TableCell>{comment?.blogId?.title}</TableCell>
                                         <TableCell>{comment?.author?.name}</TableCell>
                                         <TableCell>{moment(comment?.createdAt).format('DD/MM/YYYY')}</TableCell>
@@ -57,7 +57,7 @@ const Comments = () => {
                                         <TableCell className='flex gap-2'>
                                             <Button
                                                 variant='outline'
-                                                className='bg-slate-100 hover:bg-violet-500 hover:text-white'
+                                                className='bg-slate-100 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 hover:bg-violet-500 hover:text-white dark:hover:bg-violet-500'
                                                 onClick={() => handleDelete(comment._id)}
                                                 aria-label={`Eliminar ${comment.author?.name}`}
                                             >
@@ -68,7 +68,7 @@ const Comments = () => {
                                 ))
                                 :
                                 <TableRow>
-                                    <TableCell colSpan="5">
+                                    <TableCell colSpan="5" className='dark:text-slate-300'>
                                         No se encontraron datos.
                                     </TableCell>
                                 </TableRow>

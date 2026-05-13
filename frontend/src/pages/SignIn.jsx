@@ -13,6 +13,8 @@ import { useMutation } from '@tanstack/react-query'
 import { useUserStore } from '@/store/useUserStore'
 import GoogleLogin from '@/components/GoogleLogin'
 import logo from '@/assets/images/logo.png'
+import logoDark from '@/assets/images/logo-dark.png'
+import { useThemeStore } from '@/store/useThemeStore'
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -22,6 +24,7 @@ const formSchema = z.object({
 const SignIn = () => {
     const navigate = useNavigate()
     const setUser = useUserStore((state) => state.setUser)
+    const isDark = useThemeStore((state) => state.isDark)
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -55,14 +58,17 @@ const SignIn = () => {
             <Card className='w-100 p-4'>
                 <div className='flex justify-center items-center mb-2'>
                     <Link to={RouteIndex}>
-                        <img src={logo} alt="Logo" />
+                        <img
+                            src={isDark ? logoDark : logo}
+                            alt="Logo"
+                        />
                     </Link>
                 </div>
                 <h1 className='text-2xl font-bold text-center mb-5'>Iniciar Sesión</h1>
                 <div>
                     <GoogleLogin />
                     <div className='border my-5 flex justify-center items-center'>
-                        <span className='absolute bg-white'>O</span>
+                        <span className='absolute bg-white dark:bg-black dark:text-white'>O</span>
                     </div>
                 </div>
                 <FormProvider {...form}>

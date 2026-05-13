@@ -114,7 +114,7 @@ const AddBlog = () => {
 
     return (
         <div>
-            <Card className='pt-5 bg-slate-100'>
+            <Card className='pt-5 bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 <CardContent>
                     <FormProvider {...form}>
                         <form
@@ -124,15 +124,15 @@ const AddBlog = () => {
                             className="w-full space-y-4"
                         >
                             <div className='flex flex-col gap-2'>
-                                <label className="text-sm font-medium">Categoría</label>
+                                <label className="text-sm font-medium dark:text-slate-100">Categoría</label>
                                 <Select onValueChange={(value) => form.setValue('category', value, { shouldValidate: true })} defaultValues={form.watch('category')}>
-                                    <SelectTrigger>
+                                    <SelectTrigger className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100'>
                                         <SelectValue placeholder="Seleccionar" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className='dark:bg-slate-800 dark:border-slate-700'>
                                         {categoryData?.categories?.length > 0 ?
                                             categoryData.categories.map(category => (
-                                                <SelectItem key={category._id} value={category._id}>
+                                                <SelectItem key={category._id} value={category._id} className='dark:text-slate-100 dark:focus:bg-slate-700'>
                                                     {category.name}
                                                 </SelectItem>
                                             ))
@@ -148,32 +148,34 @@ const AddBlog = () => {
                                 )}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <label className="text-sm font-medium">Título</label>
+                                <label className="text-sm font-medium dark:text-slate-100">Título</label>
                                 <Input
                                     {...form.register("title")}
                                     placeholder="Ingrese el título"
+                                    className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400'
                                 />
                                 {form.formState.errors.title && (
                                     <p className="text-sm text-red-500">{form.formState.errors.title.message}</p>
                                 )}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <label className="text-sm font-medium">Ficha</label>
+                                <label className="text-sm font-medium dark:text-slate-100">Ficha</label>
                                 <Input
                                     {...form.register("slug")}
                                     placeholder="Ingrese la ficha"
+                                    className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400'
                                 />
                                 {form.formState.errors.slug && (
                                     <p className="text-sm text-red-500">{form.formState.errors.slug.message}</p>
                                 )}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <span className='mb-2 block'>Imagen</span>
+                                <span className='mb-2 block dark:text-slate-100'>Imagen</span>
                                 <Dropzone onDrop={acceptedFiles => handleFileSection(acceptedFiles)}>
                                     {({ getRootProps, getInputProps }) => (
                                         <div {...getRootProps()}>
                                             <input {...getInputProps()} />
-                                            <div className='flex justify-center items-center w-36 h-36 border-2 border-dashed rounded'>
+                                            <div className='flex justify-center items-center w-36 h-36 border-2 border-dashed rounded dark:border-slate-600'>
                                                 <img src={filePreview} />
                                             </div>
                                         </div>
@@ -182,7 +184,7 @@ const AddBlog = () => {
                             </div>
                             <div className='mb-3'>
                                 <div className='flex flex-col gap-2'>
-                                    <label className="text-sm font-medium">Contenido</label>
+                                    <label className="text-sm font-medium dark:text-slate-100">Contenido</label>
                                     <Editor
                                         props={{ initialData: '', onChange: handleEditorData }}
                                     />

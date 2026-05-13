@@ -38,24 +38,24 @@ const User = () => {
 
     return (
         <div>
-            <Card className='bg-slate-100'>
+            <Card className='bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 <CardContent>
                     <Table>
-                        <TableCaption>Lista de Usuarios.</TableCaption>
+                        <TableCaption className='dark:text-slate-400'>Lista de Usuarios.</TableCaption>
                         <TableHeader>
-                            <TableRow>
-                                <TableHead className="font-bold">Rol</TableHead>
-                                <TableHead className="font-bold">Nombre</TableHead>
-                                <TableHead className="font-bold">Correo</TableHead>
-                                <TableHead className="font-bold">Avatar</TableHead>
-                                <TableHead className="font-bold">Registro</TableHead>
-                                {isAdmin && <TableHead className="font-bold">Acciones</TableHead>}
+                            <TableRow className='dark:border-slate-700'>
+                                <TableHead className="font-bold dark:text-slate-100">Rol</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Nombre</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Correo</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Avatar</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Registro</TableHead>
+                                {isAdmin && <TableHead className="font-bold dark:text-slate-100">Acciones</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {data?.users?.length > 0
                                 ? data.users.map(u => (
-                                    <TableRow key={u._id}>
+                                    <TableRow key={u._id} className='dark:border-slate-700 dark:text-slate-200'>
                                         <TableCell>{u?.role}</TableCell>
                                         <TableCell>{u?.name}</TableCell>
                                         <TableCell>{u?.email}</TableCell>
@@ -71,7 +71,7 @@ const User = () => {
                                             <TableCell>
                                                 <Button
                                                     variant='outline'
-                                                    className='bg-slate-100 hover:bg-violet-500 hover:text-white'
+                                                    className='bg-slate-100 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 hover:bg-violet-500 hover:text-white dark:hover:bg-violet-500'
                                                     onClick={() => handleDelete(u._id)}
                                                     aria-label={`Eliminar ${u.name}`}
                                                 >
@@ -83,7 +83,7 @@ const User = () => {
                                 ))
                                 : (
                                     <TableRow>
-                                        <TableCell colSpan={isAdmin ? 6 : 5}>
+                                        <TableCell colSpan={isAdmin ? 6 : 5} className='dark:text-slate-300'>
                                             No se encontraron datos.
                                         </TableCell>
                                     </TableRow>
