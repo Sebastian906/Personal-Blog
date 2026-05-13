@@ -13,17 +13,19 @@ import RelatedBlog from '@/components/RelatedBlog'
 import { useUserStore } from '@/store/useUserStore'
 import { RouteEditBlog } from '@/helpers/RouteName'
 import { FiEdit } from 'react-icons/fi'
+import NotFound from '@/components/NotFound'
 
 const SingleBlogDetails = () => {
     const { category, slug } = useParams()
     const currentUser = useUserStore((state) => state.user)
 
-    const { data, loading } = useFetch(`${getEnv('VITE_BASE_API_URL')}/blogs/get-blog/${slug}`,
+    const { data, loading, error } = useFetch(`${getEnv('VITE_BASE_API_URL')}/blogs/get-blog/${slug}`,
         { method: 'GET', credentials: 'include' },
         [slug, category],
     )
 
     if (loading) return <Loading />
+    if (error || !data?.blog) return <NotFound />
 
     const isAuthor = currentUser?._id && data?.blog?.author?._id === currentUser._id
 

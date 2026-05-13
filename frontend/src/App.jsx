@@ -19,6 +19,7 @@ import Comments from './pages/Comments'
 import User from './pages/User'
 import AuthRouteProtection from './components/AuthRouteProtection'
 import OnlyAdminAllowed from './components/OnlyAdminAllowed'
+import NotFound from './components/NotFound'
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
               <Route path={RouteAddCategory} element={<AddCategory />} />
               <Route path={RouteEditCategory()} element={<EditCategory />} />
             </Route>
+            <Route path='*' element={<NotFound />} /> 
           </Route>
           <Route path={RouteSignIn} element={<SignIn />} />
           <Route path={RouteSignUp} element={<SignUp />} />
