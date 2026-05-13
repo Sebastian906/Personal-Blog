@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getEnv } from '@/helpers/getEnv'
 import { useFetch } from '@/hooks/useFetch'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { decode } from 'entities'
 import Loading from '@/components/Loading'
 import Comment from '@/components/Comment'
@@ -10,15 +10,22 @@ import CommentCount from '@/components/CommentCount'
 import moment from 'moment'
 import LikeCount from '@/components/LikeCount'
 import RelatedBlog from '@/components/RelatedBlog'
+import { useUserStore } from '@/store/useUserStore'
+import { RouteEditBlog } from '@/helpers/RouteName'
+import { FiEdit } from 'react-icons/fi'
 
 const SingleBlogDetails = () => {
     const { category, slug } = useParams()
+    const currentUser = useUserStore((state) => state.user)
+
     const { data, loading } = useFetch(`${getEnv('VITE_BASE_API_URL')}/blogs/get-blog/${slug}`,
         { method: 'GET', credentials: 'include' },
         [slug, category],
     )
 
     if (loading) return <Loading />
+
+    const isAuthor = currentUser?._id && data?.blog?.author?._id === currentUser._id
 
     return (
         <div className='md:flex-nowrap flex-wrap flex justify-between gap-20'>
@@ -40,6 +47,11 @@ const SingleBlogDetails = () => {
                                 </div>
                             </div>
                             <div className='flex items-center gap-5 dark:text-slate-100'>
+                                {isAuthor && (
+                                    <Link to={RouteEditBlog(data.blog._id)} title="Editar blog">
+                                        <FiEdit className='text-violet-500 hover:text-violet-700 cursor-pointer' size={18} />
+                                    </Link>
+                                )}
                                 <LikeCount props={{ blogId: data.blog._id }} />
                                 <CommentCount props={{ blogId: data.blog._id }} />
                             </div>
