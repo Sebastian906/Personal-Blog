@@ -24,8 +24,8 @@ const SingleBlogDetails = () => {
         <div className='md:flex-nowrap flex-wrap flex justify-between gap-20'>
             {data?.blog && (
                 <>
-                    <div className='border rounded md:w-[70%] w-full p-5'>
-                        <h1 className='text-2xl font-bold mb-5'>{data.blog.title}</h1>
+                    <div className='border dark:border-slate-700 rounded md:w-[70%] w-full p-5 dark:bg-slate-800'>
+                        <h1 className='text-2xl font-bold mb-5 dark:text-slate-100'>{data.blog.title}</h1>
                         <div className='flex justify-between items-center'>
                             <div className='flex items-center gap-5'>
                                 <Avatar>
@@ -33,13 +33,13 @@ const SingleBlogDetails = () => {
                                     <AvatarFallback>{data.blog.author?.name?.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                    <p className='font-bold'>{data.blog.author?.name}</p>
-                                    <p className='text-xs text-gray-500'>
+                                    <p className='font-bold dark:text-slate-100'>{data.blog.author?.name}</p>
+                                    <p className='text-xs text-gray-500 dark:text-slate-400'>
                                         {moment(data.blog.createdAt).format('DD/MM/YYYY')}
                                     </p>
                                 </div>
                             </div>
-                            <div className='flex items-center gap-5'>
+                            <div className='flex items-center gap-5 dark:text-slate-100'>
                                 <LikeCount props={{ blogId: data.blog._id }} />
                                 <CommentCount props={{ blogId: data.blog._id }} />
                             </div>
@@ -47,12 +47,15 @@ const SingleBlogDetails = () => {
                         <div className='my-5'>
                             <img src={data.blog.featuredImage} alt={data.blog.title} className='rounded' />
                         </div>
-                        <div dangerouslySetInnerHTML={{ __html: decode(data.blog.blogContent || '') }} />
-                        <div className='border-t mt-5 pt-5'>
+                        <div
+                            className='dark:text-slate-100 prose dark:prose-invert max-w-none'
+                            dangerouslySetInnerHTML={{ __html: decode(data.blog.blogContent || '') }}
+                        />
+                        <div className='border-t dark:border-slate-700 mt-5 pt-5'>
                             <Comment props={{ blogId: data.blog._id }} />
                         </div>
                     </div>
-                    <div className='border rounded md:w-[30%] w-full p-5'>
+                    <div className='border dark:border-slate-700 rounded md:w-[30%] w-full p-5 dark:bg-slate-800'>
                         <RelatedBlog props={{
                             category: data.blog.category?.slug ?? category,
                             currentBlog: slug,

@@ -22,7 +22,7 @@ const SearchBox = () => {
             <Input
                 onChange={getInput}
                 placeholder="Buscar..."
-                className='h-9 rounded-full bg-slate-200 px-6'
+                className='h-9 rounded-full bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400 px-6 border-0'
             />
         </form>
     )

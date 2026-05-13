@@ -97,7 +97,7 @@ const Profile = () => {
     }
 
     return (
-        <Card className='max-w-3xl mx-auto bg-slate-100'>
+        <Card className='max-w-3xl mx-auto bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
             <CardContent>
                 <div className='flex justify-center items-center mt-10'>
                     <Dropzone onDrop={acceptedFiles => handleFileSection(acceptedFiles)}>
@@ -121,36 +121,36 @@ const Profile = () => {
                     <FormProvider {...form}>
                         <form onSubmit={form.handleSubmit((values) => updateMutation.mutate(values))}>
                             <div className='mb-3'>
-                                <label className="text-sm font-medium">Nombre</label>
-                                <Input {...form.register("name")} placeholder="Ingrese su nombre" />
+                                <label className="text-sm font-medium dark:text-slate-100">Nombre</label>
+                                <Input {...form.register("name")} placeholder="Ingrese su nombre" className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400' />
                                 {form.formState.errors.name && (
                                     <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
                                 )}
                             </div>
                             <div className='mb-3'>
-                                <label className="text-sm font-medium">Email</label>
-                                <Input {...form.register("email")} placeholder="Ingrese su correo electrónico" />
+                                <label className="text-sm font-medium dark:text-slate-100">Email</label>
+                                <Input {...form.register("email")} placeholder="Ingrese su correo electrónico" className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400' />
                                 {form.formState.errors.email && (
                                     <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
                                 )}
                             </div>
                             <div className='mb-3'>
-                                <label className="text-sm font-medium">Sobre mí</label>
-                                <Textarea {...form.register("bio")} placeholder="Cuéntanos sobre ti" />
+                                <label className="text-sm font-medium dark:text-slate-100">Sobre mí</label>
+                                <Textarea {...form.register("bio")} placeholder="Cuéntanos sobre ti" className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400' />
                                 {form.formState.errors.bio && (
                                     <p className="text-sm text-red-500">{form.formState.errors.bio.message}</p>
                                 )}
                             </div>
                             <div className='mb-3'>
-                                <label className="text-sm font-medium">Contraseña</label>
-                                <Input type="password" {...form.register("password")} placeholder="Ingrese su contraseña" />
+                                <label className="text-sm font-medium dark:text-slate-100">Contraseña</label>
+                                <Input type="password" {...form.register("password")} placeholder="Ingrese su contraseña" className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400' />
                                 {form.formState.errors.password && (
                                     <p className="text-sm text-red-500">{form.formState.errors.password.message}</p>
                                 )}
                             </div>
                             <div className='mb-3'>
-                                <label className="text-sm font-medium">Confirmar Contraseña</label>
-                                <Input type="password" {...form.register("confirmPassword")} placeholder="Confirme su contraseña" />
+                                <label className="text-sm font-medium dark:text-slate-100">Confirmar Contraseña</label>
+                                <Input type="password" {...form.register("confirmPassword")} placeholder="Confirme su contraseña" className='dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-400' />
                                 {form.formState.errors.confirmPassword && (
                                     <p className="text-sm text-red-500">{form.formState.errors.confirmPassword.message}</p>
                                 )}

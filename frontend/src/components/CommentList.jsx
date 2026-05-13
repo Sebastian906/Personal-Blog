@@ -22,7 +22,7 @@ const CommentList = ({ props }) => {
 
     return (
         <div>
-            <h4 className='text-2xl font-bold mb-5'>
+            <h4 className='text-2xl font-bold mb-5 dark:text-slate-100'>
                 {allComments.length} Comentarios
             </h4>
             <div className='mt-3 flex flex-col gap-4'>
@@ -36,17 +36,17 @@ const CommentList = ({ props }) => {
                                 </AvatarFallback>
                             </Avatar>
                             <div>
-                                <p className='font-bold'>{comment.author?.name}</p>
-                                <p className='text-xs text-gray-500'>
+                                <p className='font-bold dark:text-slate-100'>{comment.author?.name}</p>
+                                <p className='text-xs text-gray-500 dark:text-slate-400'>
                                     {comment.createdAt
                                         ? moment(comment.createdAt).format('DD/MM/YYYY HH:mm')
                                         : 'Ahora'}
                                 </p>
-                                <p className='mt-1'>{comment.comment}</p>
+                                <p className='mt-1 dark:text-slate-200'>{comment.comment}</p>
                             </div>
                         </div>
                     ))
-                    : <p className='text-gray-500 text-sm'>Sé el primero en comentar.</p>
+                    : <p className='text-gray-500 dark:text-slate-400 text-sm'>Sé el primero en comentar.</p>
                 }
             </div>
         </div>

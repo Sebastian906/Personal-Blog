@@ -11,6 +11,7 @@ import { getEnv } from '@/helpers/getEnv'
 import { showToast } from '@/helpers/showToast'
 import GoogleLogin from '@/components/GoogleLogin'
 import { useMutation } from '@tanstack/react-query'
+import { useThemeStore } from '@/store/useThemeStore'
 
 const formSchema = z.object({
     name: z.string().min(3, 'El nombre debe ser de al menos 3 caracteres.'),
@@ -24,6 +25,7 @@ const formSchema = z.object({
 
 const SignUp = () => {
     const navigate = useNavigate()
+    const isDark = useThemeStore((state) => state.isDark)
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -57,7 +59,7 @@ const SignUp = () => {
                 <div>
                     <GoogleLogin />
                     <div className='border my-5 flex justify-center items-center'>
-                        <span className='absolute bg-white'>O</span>
+                        <span className='absolute bg-white dark:bg-black dark:text-white'>O</span>
                     </div>
                 </div>
                 <FormProvider {...form}>

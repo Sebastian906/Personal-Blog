@@ -19,7 +19,7 @@ const Index = () => {
                 ?
                 blogData.blogs.map(blog => <BlogCard key={blog._id} props={blog} />)
                 :
-                <div>Datos no encontrados.</div>
+                <div className='dark:text-slate-100'>Datos no encontrados.</div>
             }
         </div>
     )

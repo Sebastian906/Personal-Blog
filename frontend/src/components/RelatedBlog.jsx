@@ -16,22 +16,22 @@ const RelatedBlog = ({ props }) => {
 
     return (
         <div>
-            <h2 className='text-2xl font-bold mb-5'>Blogs Relacionados</h2>
+            <h2 className='text-2xl font-bold mb-5 dark:text-slate-100'>Blogs Relacionados</h2>
             <div>
                 {data?.relatedBlog?.length > 0
                     ? data.relatedBlog.map(blog => (
                         <Link key={blog._id} to={RouteBlogDetails(props.category, blog.slug)}>
-                            <div className='flex items-center gap-2 mb-3'>
+                            <div className='flex items-center gap-2 mb-3 hover:opacity-80 transition-opacity'>
                                 <img
                                     className='w-25 h-17.5 object-cover rounded-md'
                                     src={blog.featuredImage}
                                     alt={blog.title}
                                 />
-                                <h4 className='line-clamp-2 text-lg font-semibold'>{blog.title}</h4>
+                                <h4 className='line-clamp-2 text-lg font-semibold dark:text-slate-100'>{blog.title}</h4>
                             </div>
                         </Link>
                     ))
-                    : <p className='text-gray-500 text-sm'>Sin blogs relacionados.</p>
+                    : <p className='text-gray-500 dark:text-slate-400 text-sm'>Sin blogs relacionados.</p>
                 }
             </div>
         </div>

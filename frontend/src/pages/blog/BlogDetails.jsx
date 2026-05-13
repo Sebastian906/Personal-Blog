@@ -55,7 +55,7 @@ const BlogDetails = () => {
 
     return (
         <div>
-            <Card className='bg-slate-100'>
+            <Card className='bg-slate-100 dark:bg-slate-800 dark:ring-slate-700'>
                 <CardHeader>
                     <div>
                         <Button asChild>
@@ -68,19 +68,19 @@ const BlogDetails = () => {
                 <CardContent>
                     <Table>
                         <TableHeader>
-                            <TableRow>
-                                <TableHead className="font-bold">Autor</TableHead>
-                                <TableHead className="font-bold">Categoría</TableHead>
-                                <TableHead className="font-bold">Título</TableHead>
-                                <TableHead className="font-bold">Ficha</TableHead>
-                                <TableHead className="font-bold">Fecha</TableHead>
-                                <TableHead className="font-bold">Acciones</TableHead>
+                            <TableRow className='dark:border-slate-700'>
+                                <TableHead className="font-bold dark:text-slate-100">Autor</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Categoría</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Título</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Ficha</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Fecha</TableHead>
+                                <TableHead className="font-bold dark:text-slate-100">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {blogData?.blogs?.length > 0 ?
                                 blogData.blogs.map(blog => (
-                                    <TableRow key={blog._id}>
+                                    <TableRow key={blog._id} className='dark:border-slate-700 dark:text-slate-200'>
                                         <TableCell>{renderCellValue(blog.author)}</TableCell>
                                         <TableCell>{renderCellValue(blog.category)}</TableCell>
                                         <TableCell>{blog.title}</TableCell>
@@ -89,7 +89,7 @@ const BlogDetails = () => {
                                         <TableCell className='flex gap-2'>
                                             <Button
                                                 variant='outline'
-                                                className='bg-slate-100 hover:bg-violet-500 hover:text-white'
+                                                className='bg-slate-100 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 hover:bg-violet-500 hover:text-white dark:hover:bg-violet-500'
                                                 asChild
                                             >
                                                 <Link to={RouteEditBlog(blog._id)}>
@@ -98,7 +98,7 @@ const BlogDetails = () => {
                                             </Button>
                                             <Button
                                                 variant='outline'
-                                                className='bg-slate-100 hover:bg-violet-500 hover:text-white'
+                                                className='bg-slate-100 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 hover:bg-violet-500 hover:text-white dark:hover:bg-violet-500'
                                                 onClick={() => handleDelete(blog._id)}
                                                 aria-label={`Eliminar ${blog.title}`}
                                             >
@@ -109,7 +109,7 @@ const BlogDetails = () => {
                                 ))
                                 :
                                 <TableRow>
-                                    <TableCell colSpan="3">
+                                    <TableCell colSpan="6" className='dark:text-slate-300'>
                                         No se encontraron datos.
                                     </TableCell>
                                 </TableRow>
