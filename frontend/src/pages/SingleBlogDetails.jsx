@@ -11,9 +11,10 @@ import moment from 'moment'
 import LikeCount from '@/components/LikeCount'
 import RelatedBlog from '@/components/RelatedBlog'
 import { useUserStore } from '@/store/useUserStore'
-import { RouteEditBlog } from '@/helpers/RouteName'
+import { RouteEditBlog, RouteBlogByCategory } from '@/helpers/RouteName'
 import { FiEdit } from 'react-icons/fi'
 import NotFound from '@/components/NotFound'
+import Breadcrumb from '@/components/Breadcrumb'
 
 const SingleBlogDetails = () => {
     const { category, slug } = useParams()
@@ -29,11 +30,22 @@ const SingleBlogDetails = () => {
 
     const isAuthor = currentUser?._id && data?.blog?.author?._id === currentUser._id
 
+    const breadcrumbItems = [
+        {
+            label: data.blog.category?.name ?? category,
+            href: RouteBlogByCategory(data.blog.category?.slug ?? category),
+        },
+        {
+            label: data.blog.title,
+        },
+    ]
+
     return (
         <div className='md:flex-nowrap flex-wrap flex justify-between gap-20'>
             {data?.blog && (
                 <>
                     <div className='border dark:border-slate-700 rounded md:w-[70%] w-full p-5 dark:bg-slate-800'>
+                        <Breadcrumb items={breadcrumbItems} />
                         <h1 className='text-2xl font-bold mb-5 dark:text-slate-100'>{data.blog.title}</h1>
                         <div className='flex justify-between items-center'>
                             <div className='flex items-center gap-5'>
